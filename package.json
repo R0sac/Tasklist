@@ -14,13 +14,5 @@
   "license": "Apache-2.0",
   "dependencies": {
     "cordova-jquery": "^0.1.6"
-  },
-  "devDependencies": {
-    "cordova-browser": "^6.0.0"
-  },
-  "cordova": {
-    "platforms": [
-      "browser"
-    ]
   }
 }

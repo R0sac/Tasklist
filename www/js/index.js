@@ -21,6 +21,7 @@
 // See https://cordova.apache.org/docs/en/latest/cordova/events/events.html#deviceready
 document.addEventListener('deviceready', onDeviceReady, false);
 
+var arrayObjetos = [];
 function onDeviceReady() {
     // Cordova is now initialized. Have fun!
 
@@ -28,10 +29,68 @@ function onDeviceReady() {
     document.getElementById('deviceready').classList.add('ready');
 }
 
-function  afegint_jquery() {
-    //result = window.prompt(message, default);
-    var namePage = prompt("Nombre de la paguina");
-    if (namePage == true) {
-        
-    } 
+let boton = document.getElementById("botonAdd");
+boton.addEventListener("click", add);
+let botonEdit = document.getElementById("botonEnviarEdicion");
+botonEdit.addEventListener("click", enviarEdicion);
+
+function add(){
+    valor = prompt("Añadir pagina: ");
+    $("ul").append("<li id='contenido'><h1>"+ valor + "</h1><button class='btnEliminar ui-btn ui-shadow ui-corner-all' id='btnBorrar'>Eliminar</button><a href='#editar' class='aEditar'><button class='btnEditar ui-btn ui-shadow ui-corner-all'>Editar</button></a></li>");
+    $("ul").listview("refresh");
+    insertarFuncionBtones()
+    insertarFuncionBtonesEditar()
+    setearLocal()
+}
+
+function insertarFuncionBtones(){
+    $('.btnEliminar').each(function(){
+        $(this).click(eliminar)
+    })
+}
+
+function eliminar(e){
+    $(e.target).parent().remove()
+    setearLocal()
+}
+
+function insertarFuncionBtonesEditar(){
+    $('.btnEditar').each(function(){
+        $(this).click(editar)
+    })
+    $('.aEditar').each(function(){
+        $(this).click("asd")
+    })
+}
+var elemento = null
+function editar(e){
+    elemento = $(e.target).parent().parent().children().first()
+    $('#inputEditar').val(elemento.text())
+}
+
+function enviarEdicion(){
+   let texto = $('#inputEditar').val()
+   elemento.text(texto)
+   setearLocal()
+}
+
+function setearLocal(){
+    arrayObjetos = [];
+    $("ul>li>h1").each(function (){
+        arrayObjetos.push($(this).text())
+    })
+    arrayObjetos = JSON.stringify(arrayObjetos)
+    localStorage.setItem("objetos", arrayObjetos);
+}
+loadItems()
+function loadItems(){
+    let items = localStorage.getItem("objetos")
+    items = JSON.parse(items)
+    console.log(items)
+    for(let i = 0; i<items.length;i++){
+    $("ul").append("<li id='contenido'><h1>"+ items[i] + "</h1><button class='btnEliminar ui-btn ui-shadow ui-corner-all' id='btnBorrar'>Eliminar</button><a href='#editar' class='aEditar'><button class='btnEditar ui-btn ui-shadow ui-corner-all'>Editar</button></a></li>");
+    insertarFuncionBtones()
+    insertarFuncionBtonesEditar()
+    }
+    $("ul").listview("refresh");
 }
